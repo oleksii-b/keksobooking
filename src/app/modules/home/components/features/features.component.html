@@ -1,0 +1,15 @@
+<label
+  *ngFor="let feature of features"
+  [ngClass]="[featureClass, feature.name]"
+  [class.active]="feature.checked"
+>
+  <input
+    type="checkbox"
+    name="features"
+    [value]="feature.name"
+    class="feature__checkbox visually-hidden"
+    (change)="onChange(feature)"
+  />
+
+  {{feature.title}}
+</label>

@@ -1,0 +1,119 @@
+<div class="error hidden"></div>
+
+<section class="promo">
+  <h2 class="promo__title visually-hidden">
+    Keksobooking. Кексы по соседству
+  </h2>
+
+  <img
+    class="promo__img"
+    src="assets/img/keksobooking.svg"
+    alt="Keksobooking. Кексы по соседству"
+    width="215" 
+    height="45"
+  />
+</section>
+
+<header class="header">
+  <div class="header__bg"></div>
+
+  <h1 class="title">
+    Аренда жилья в Токио
+  </h1>
+
+  <div class="filters">
+    <app-filters></app-filters>
+  </div>
+</header>
+
+<main>
+  <div class="btn-container container">
+    <button type="button" class="btn btn-success" (click)="openAdFormModal(adFormModal)">
+      Добавить объявление
+    </button>
+  </div>
+
+  <ng-template #adFormModal>
+    <div class="modal-header">
+      <h2>
+        Ваше объявление
+      </h2>
+
+      <button
+        class="close pull-right"
+        (click)="modalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <app-ad-form
+        (openSuccessModal)="openSuccessModal()"
+        (hideFormModal)="modalRef.hide()"
+      ></app-ad-form>
+    </div>
+  </ng-template>
+
+  <ng-template #successModal>
+    <div class="modal-header modal-header--success">
+      <button
+        class="close pull-right"
+        (click)="successModalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <h2 class="modal-title modal-title--success">
+        Ваше объявление<br>успешно размещено!
+      </h2>
+    </div>
+
+    <div class="modal-footer modal-footer--success">
+      <button
+        class="btn btn-success"
+        (click)="successModalRef.hide()"
+      >
+        Закрыть
+      </button>
+    </div>
+  </ng-template>
+
+  <app-ads></app-ads>
+
+  <div class="success hidden">
+    <p class="success__message">
+      Ваше объявление<br>успешно размещено!
+    </p>
+  </div>
+</main>
+
+<footer class="footer container">
+  <div class="footer__copyright copyright">
+    <a class="copyright__link copyright__link--image" href="https://htmlacademy.ru/intensive/javascript">
+      <img src="assets/img/htmla-logo.svg" width="130" height="45" alt="HTML Academy" class="copyright__logo" />
+    </a>
+
+    <p>
+      Сделано в <a class="copyright__link copyright__link--text" href="https://htmlacademy.ru/intensive/javascript">HTMLAcademy</a> &copy; 2018
+    </p>
+  </div>
+
+  <ul class="footer__contacts contacts">
+    <li>
+      <a href="https://twitter.com/htmlacademy_ru" class="contacts__link contacts__link--twitter">Twitter</a>
+    </li>
+
+    <li>
+      <a href="https://www.instagram.com/htmlacademy/" class="contacts__link contacts__link--instagram">Instagtam</a>
+    </li>
+
+    <li>
+      <a href="https://www.facebook.com/htmlacademy" class="contacts__link contacts__link--facebook">Facebook</a>
+    </li>
+
+    <li>
+      <a href="https://vk.com/htmlacademy" class="contacts__link contacts__link--vk">VK</a>
+    </li>
+  </ul>
+</footer>

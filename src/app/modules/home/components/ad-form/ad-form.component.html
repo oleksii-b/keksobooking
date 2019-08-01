@@ -1,0 +1,286 @@
+<form
+  #form
+  class="ad-form"
+  method="post"
+  enctype="multipart/form-data"
+  autocomplete="off"
+  novalidate
+  [formGroup]="adForm"
+  (ngSubmit)="onSubmit($event)"
+>
+  <fieldset class="header">
+    <legend class="title">Ваша фотография (для карты)</legend>
+
+    <div class="header__upload">
+      <div class="header__preview">
+        <img *ngIf="!avatar" src="assets/img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44" />
+        <img *ngIf="avatar" class="avatar" [src]="avatar" alt="Аватар пользователя" />
+      </div>
+
+      <div class="header__upload-group">
+        <input
+          type="file"
+          name="avatar"
+          class="header__upload-input visually-hidden"
+          (input)="onAvatarLoad($event)"
+          formControlName="avatar"
+        />
+
+        <label class="header__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
+      </div>
+
+      <p class="header__info">
+        Заполните все обязательные поля, назначьте цену, загрузите фотографии. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--wide">
+    <label class="label">Заголовок объявления</label>
+
+    <input
+      name="title"
+      class="form-control"
+      [class.show-error]="showError"
+      type="text"
+      minlength="30"
+      maxlength="100"
+      formControlName="title"
+    />
+
+    <div
+      class="error-msg"
+      [class.visible]="showErrorMsg('title')"
+    >
+      Поле должно содержать от 30 до 100 символов
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--wide">
+    <label class="label">Адрес</label>
+
+    <input
+      name="address"
+      class="form-control"
+      [class.show-error]="showError"
+      type="text"
+      formControlName="address"
+    />
+
+    <div
+      class="error-msg"
+      [class.visible]="showErrorMsg('address')"
+    >
+      Обязательное поле
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--type">
+    <label class="label">Тип жилья</label>
+
+    <select
+      name="type"
+      class="form-control"
+      [class.show-error]="showError"
+      formControlName="type"
+    >
+      <option value="" disabled selected hidden>Не выбрано</option>
+      <option value="bungalo">Эконом-вариант</option>
+      <option value="flat">Квартира</option>
+      <option value="house">Дом</option>
+    </select>
+
+    <div
+      class="error-msg"
+      [class.visible]="showErrorMsg('type')"
+    >
+      Обязательное поле
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--price">
+    <label class="label">Цена за ночь (руб.)</label>
+
+    <input
+      name="price"
+      class="form-control"
+      [class.show-error]="showError"
+      type="number"
+      formControlName="price"
+    />
+
+    <div
+      class="error-msg"
+      [class.visible]="showErrorMsg('price')"
+    >
+      Обязательное поле
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--time">
+    <label class="label">Время заезда и выезда</label>
+
+    <div class="time-controls">
+      <div class="timein-group">
+        <select
+          name="timein"
+          class="form-control"
+          [class.show-error]="showError"
+          formControlName="timein"
+        >
+          <option value="" disabled selected hidden>Заезд после...</option>
+          <option value="10:00">После 10:00</option>
+          <option value="12:00">После 12:00</option>
+          <option value="14:00">После 14:00</option>
+        </select>
+
+        <div
+          class="error-msg"
+          [class.visible]="showErrorMsg('timein')"
+        >
+          Обязательное поле
+        </div>
+      </div>
+
+      <div class="timeout-group">
+        <select
+          name="timeout"
+          class="form-control"
+          [class.show-error]="showError"
+          title="Time to go out"
+          formControlName="timeout"
+        >
+          <option value="" disabled selected hidden>Выезд до...</option>
+          <option value="10:00">До 10:00</option>
+          <option value="12:00">До 12:00</option>
+          <option value="14:00">До 14:00</option>
+        </select>
+
+        <div
+          class="error-msg"
+          [class.visible]="showErrorMsg('timeout')"
+        >
+          Обязательное поле
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <label class="label">Кол-во комнат</label>
+
+    <select
+      name="rooms"
+      class="form-control"
+      [class.show-error]="showError"
+      (change)="capacitySelect.disabled = false"
+      [(ngModel)]="rooms"
+      formControlName="rooms"
+    >
+      <option value="" disabled selected hidden>Не выбрано</option>
+      <option value="1">1 комната</option>
+      <option value="2">2 комнаты</option>
+      <option value="3">3 комнаты</option>
+      <option value="100">более 3-х комнат</option>
+    </select>
+
+    <div
+      class="error-msg"
+      [class.visible]="showErrorMsg('rooms')"
+    >
+      Обязательное поле
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <label class="label">Количество мест</label>
+
+    <select
+      #capacitySelect
+      name="capacity"
+      disabled
+      class="form-control"
+      [class.show-error]="showError"
+      [(ngModel)]="capacity"
+      formControlName="capacity"
+    >
+      <option value="" disabled selected hidden>Не выбрано</option>
+      <option value="1" [disabled]="rooms && +rooms === 100">для 1 гостя</option>
+      <option value="2" [disabled]="rooms && (+rooms < 2 || +rooms === 100)">для 2 гостей</option>
+      <option value="3" [disabled]="rooms && (+rooms < 3 || +rooms === 100)">для 3 гостей</option>
+      <option value="0" [disabled]="rooms && +rooms < 100">более 3-х гостей</option>
+    </select>
+
+    <div
+      class="error-msg"
+      [class.visible]="showErrorMsg('capacity')"
+    >
+      Обязательное поле
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--wide">
+    <legend>Удобства: Wi-Fi, кухня, парковка, стиралка, лифт, кондиционер</legend>
+
+    <div class="features">
+      <app-features
+        [featureClass]="'feature'"
+      ></app-features>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--wide">
+    <label class="label">Описание (не обязательно)</label>
+
+    <textarea
+      rows="5"
+      class="form-control"
+      name="description"
+      formControlName="description"
+    ></textarea>
+  </fieldset>
+
+  <fieldset class="form-group form-group--wide">
+    <label class="label">Фотографии жилья</label>
+
+    <div class="photo-container">
+      <div class="upload">
+        <input
+          type="file"
+          name="images"
+          class="upload__input visually-hidden"
+          (change)="onImageLoad($event)"
+          multiple
+        />
+
+        <label class="upload__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
+      </div>
+
+      <div *ngFor="let img of images; let i = index;" class="photo" draggable="true">
+        <div class="photo__img-container">
+          <img class="photo__img" [src]="img.src" alt="" />
+        </div>
+
+        <i class="photo__btn-remove" (click)="images.splice(i, 1)">&times;</i>
+      </div>
+
+      <div
+        class="photo"
+        [ngClass]="{'visually-hidden': images.length}"
+        draggable="true"
+      ></div>
+    </div>
+  </fieldset>
+
+  <fieldset class="form-group form-group--submit">
+    <button class="btn btn-success btn-lg" type="submit">
+      Опубликовать
+    </button>
+
+    <span> &nbsp; </span>
+
+    <button class="btn btn-link" type="reset" (click)="onReset(form)">
+      очистить
+    </button>
+  </fieldset>
+</form>

@@ -1,0 +1,35 @@
+<form class="form" autocomplete="off" (change)="onSetFilters($event)">
+  <select name="type" id="housing-type" class="filter">
+    <option value="any" selected>Любой тип жилья</option>
+    <option value="bungalo">Эконом-вариант</option>
+    <option value="flat">Квартира</option>
+    <option value="house">Дом</option>
+  </select>
+
+  <select name="price" id="housing-price" class="filter">
+    <option value="any" selected>Любая</option>
+    <option value="low">до 10000&#x20bd;</option>
+    <option value="middle">10000 - 50000&#x20bd;</option>
+    <option value="high">от 50000&#x20bd;</option>
+  </select>
+
+  <select name="rooms" id="housing-rooms" class="filter">
+    <option value="any" selected>Любое число комнат</option>
+    <option value="1">Одна комната</option>
+    <option value="2">Две комнаты</option>
+    <option value="3">Три комнаты</option>
+  </select>
+
+  <select name="guests" id="housing-guests" class="filter">
+    <option value="any" selected>Любое число гостей</option>
+    <option value="1">Один гость</option>
+    <option value="2">Два гостя</option>
+    <option value="3">Три гостя</option>
+  </select>
+
+  <fieldset class="features">
+    <app-features
+      [featureClass]="'feature feature-sm'"
+    ></app-features>
+  </fieldset>
+</form>

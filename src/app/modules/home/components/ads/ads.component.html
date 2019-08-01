@@ -1,0 +1,58 @@
+<h2 class="text-center" *ngIf="ads && !ads.length">
+  Ничего не найдено
+</h2>
+
+<ul class="ads container">
+  <li class="ad" *ngFor="let ad of ads">
+    <section class="card">
+      <header class="card__header">
+        <h2 class="card__title">
+          {{ad.offer.title}}
+        </h2>
+
+        <div class="card__price">
+          {{ad.offer.price}} &#x20bd;<span>/ночь</span>
+        </div>
+      </header>
+
+      <p class="card__text card__text--address">
+        {{ad.offer.address}}
+      </p>
+
+      <div class="card__text card__group">
+        <div class="card__info">
+          <div class="card__text card__type" [ngSwitch]="ad.offer.type">
+            <ng-template ngSwitchCase="bungalo">Эконом-вариант</ng-template>
+            <ng-template ngSwitchCase="flat">Квартира</ng-template>
+            <ng-template ngSwitchCase="house">Дом</ng-template>
+          </div>
+
+          <div class="card__text">
+            Комнат: <b>{{ad.offer.rooms}}</b><br />
+            Кол-во гостей: <b>{{ad.offer.guests}}</b>
+          </div>
+
+          <div class="card__text card__text--time">
+            Заезд после {{ad.offer.checkin}}, выезд до {{ad.offer.checkout}}
+          </div>
+        </div>
+
+        <ul *ngIf="ad.offer.photos.length" class="photos">
+          <li *ngFor="let photo of ad.offer.photos">
+            <img class="photo" width="45" height="40" [src]="photo" [alt]="ad.offer.title" />
+          </li>
+        </ul>
+      </div>
+
+      <ul *ngIf="ad.offer.features.length" class="features">
+        <li *ngFor="let feature of ad.offer.features" [class]="feature">
+          {{feature}}
+        </li>
+      </ul>
+
+      <p class="card__description">
+        {{ad.offer.description}}
+      </p>
+    </section>
+  </li>
+</ul>

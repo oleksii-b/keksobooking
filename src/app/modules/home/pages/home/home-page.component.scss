@@ -1,0 +1,205 @@
+$bgcolor-success: darkseagreen;
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &__bg {
+    background-image: url('../../../../../assets/img/map.jpg');
+    background-position: center;
+    background-size: cover;
+    bottom: 0;
+    left: 0;
+    opacity: 0.75;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+  }
+}
+
+.title {
+  background: rgba(255, 255, 255, 0.8);
+  color: sienna;
+  font-family: fantasy;
+  letter-spacing: 3px;
+  margin: 120px 20px 100px;
+  padding: 10px 30px;
+  text-align: center;
+}
+
+.promo {
+  background: #fff;
+  border-bottom: 5px solid powderblue;
+  padding: 10px;
+  text-align: center;
+
+  &__img {
+    margin-top: 8px;
+  }
+}
+
+.filters {
+  background-color: rgba(3, 28, 45, 0.5);
+  width: 100%;
+}
+
+
+/* Подвал */
+
+.footer {
+  align-items: flex-start;
+  border-top: solid 1px #ccc;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 30px;
+}
+
+.copyright {
+  font-size: 12px;
+
+  &__link {
+
+    &:focus {
+      box-shadow: 0 0 2px 2px #ff6547;
+      outline: none;
+    }
+
+    &:hover {
+      opacity: 0.6;
+    }
+
+    &--image {
+      display: block;
+    }
+
+    &--text {
+      color: #353535;
+    }
+  }
+}
+
+.footer__contacts {
+  background-color: inherit;
+}
+
+.contacts {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &__link {
+    background-image: url('../../../../../assets/img/sprite-social.svg');
+    background-repeat: no-repeat;
+    background-size: 29px 274px;
+    cursor: pointer;
+    display: block;
+    font-size: 0;
+    height: 29px;
+    margin-left: 10px;
+    width: 29px;
+
+    &:focus {
+      box-shadow: 0 0 2px 2px #ff6547;
+      outline: none;
+    }
+
+    &--twitter {
+      background-position: 0 0;
+
+      &:hover,
+      &:focus {
+        background-position: 0 -140px;
+      }
+    }
+
+    &--instagram {
+      background-position: 0 -35px;
+
+      &:hover,
+      &:focus {
+        background-position: 0 -175px;
+      }
+    }
+
+    &--facebook {
+      background-position: 0 -70px;
+
+      &:hover,
+      &:focus {
+        background-position: 0 -210px;
+      }
+    }
+
+    &--vk {
+      background-position: 0 -105px;
+
+      &:hover,
+      &:focus {
+        background-position: 0 -245px;
+      }
+    }
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.modal-header {
+
+  &--success {
+    align-items: center;
+    background: $bgcolor-success;
+    border: 0;
+    flex-direction: column;
+  }
+}
+
+.modal-title {
+
+  &--success {
+    margin-bottom: 20px;
+    text-align: center;
+
+    &:before {
+      background-image: url('../../../../../assets/img/muffin-white.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      content: '';
+      display: block;
+      height: 122px;
+      left: 50%;
+      margin: 0 auto 30px;
+      width: 109px;
+    }
+  }
+}
+
+.error {
+  background-color: red;
+  color: white;
+  font-size: 30px;
+  left: 0;
+  margin: 0 auto;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  z-index: 100;
+}
+
+.modal-footer {
+
+  &--success {
+    background: $bgcolor-success;
+    border: 0;
+    justify-content: center;
+    padding-bottom: 30px;
+  }
+}

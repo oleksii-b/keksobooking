@@ -1,0 +1,130 @@
+%feature {
+  background-image: url('../../../../../assets/img/sprite-feature.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 25px 345px;
+  font-size: 0;
+  height: 28px;
+  overflow: hidden;
+  width: 30px;
+}
+
+.ads {
+  list-style: none;
+  margin: 30px auto;
+}
+
+.ad {
+  background: #fff;
+  margin: 15px 0;
+  padding: 15px;
+}
+
+.card {
+
+  &__header {
+    display: flex;
+    margin-bottom: 15px;
+  }
+
+  &__group {
+    align-items: center;
+    display: flex;
+  }
+
+  &__info {
+    flex-grow: 1;
+    margin-right: 15px;
+  }
+
+  &__avatar {
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 10px;
+    position: absolute;
+  }
+
+  &__title {
+    font-size: 16px;
+    line-height: 18px;
+    margin-bottom: 10px;
+    margin: 0;
+    width: 100%;
+  }
+
+  &__price {
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  &__type {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 15px;
+  }
+
+  &__text {
+    margin: 0 0 10px;
+  }
+}
+
+.photos {
+  display: flex;
+  font-size: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.photo {
+  margin-right: 5px;
+  transition: all 0.5s;
+
+  &:hover {
+    border: 2px solid #ff5635;
+  }
+}
+
+.features {
+  display: flex;
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.wifi {
+  @extend %feature;
+
+  background-position: 2px 5px;
+}
+
+.dishwasher {
+  @extend %feature;
+
+  background-position: 2px -25px;
+}
+
+.parking {
+  @extend %feature;
+
+  background-position: 3px -55px;
+}
+
+.washer {
+  @extend %feature;
+
+  background-position: 2px -85px;
+}
+
+.elevator {
+  @extend %feature;
+
+  background-position: 2px -143px;
+}
+
+.conditioner {
+  @extend %feature;
+
+  background-position: 3px -114px;
+}
