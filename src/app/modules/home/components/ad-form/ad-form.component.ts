@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { AdFormService } from '../../services/ad-form.service';
   templateUrl: './ad-form.component.html',
   styleUrls: ['./ad-form.component.scss'],
 })
-export class AdFormComponent implements OnInit {
+export class AdFormComponent {
   @Output() openSuccessModal = new EventEmitter<void>();
   @Output() hideFormModal = new EventEmitter<void>();
 
@@ -19,7 +19,9 @@ export class AdFormComponent implements OnInit {
   rooms = '';
   capacity = '';
   images: {file: File, fileName: string, src: string | ArrayBuffer}[] = [];
-  showError = false;
+  showErrors = false;
+  priceErrors = null;
+  capacityErrors = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,9 +32,9 @@ export class AdFormComponent implements OnInit {
       avatar: [''],
       title: ['', [Validators.required, Validators.minLength(30), Validators.maxLength(100)]],
       rooms: ['', [Validators.required]],
-      capacity: ['', [Validators.required, this.capacityValidator.bind(this)]],
+      capacity: ['', [Validators.required, this.capacityValidator]],
       type: ['', [Validators.required]],
-      price: ['', [Validators.required, this.priceValidator.bind(this)]],
+      price: ['', [Validators.required, this.priceValidator]],
       address: ['', [Validators.required]],
       timein: ['', [Validators.required]],
       timeout: ['', [Validators.required]],
@@ -40,47 +42,80 @@ export class AdFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  capacityValidator(formControl: FormControl): {[key: string]: string} {
+    const form = formControl.parent as FormGroup;
 
-  capacityValidator(): {[key: string]: boolean} {
-    if (this.adForm) {
-      const {capacity, rooms} = this.adForm.controls;
-      const capacityValue = capacity.value;
-      const roomsValue = rooms.value;
+    if (form) {
+      const {capacity, rooms} = form.controls;
+      const capacityValue = +capacity.value;
+      const roomsValue = +rooms.value;
 
-      if (
-        +capacityValue === 0 && +roomsValue === 100 ||
-        +capacityValue <= +roomsValue
-      ) {
-        return null;
+      if (capacityValue && roomsValue === 100) {
+        return {
+          value: 'Для жилья с кол-вом комнат более трех следует указать более трех гостей',
+        };
       }
 
-      return {
-        capacity: true,
-      };
+      if (capacityValue > roomsValue) {
+        return {
+          value: 'Кол-во гостей не должно превышать кол-ва комнат',
+        };
+      }
+
+      return null;
     }
-
-    return null;
   }
 
-  priceValidator(): {[key: string]: boolean} {
-    if (this.adForm) {
-      const {type, price} = this.adForm.controls;
-      const typeValue = type.value;
-      const priceValue = price.value;
+  priceValidator(formControl: FormControl): {[key: string]: string} {
+    const form = formControl.parent as FormGroup;
 
-      if (
-        typeValue === 'bungalo' && +priceValue >= 0 ||
-        typeValue === 'flat' && +priceValue >= 1000 ||
-        typeValue === 'house' && +priceValue >= 5000
-      ) {
-        return null;
+    if (form) {
+      const {type, price} = form.controls;
+      const typeValue = type.value;
+      const priceValue = +price.value;
+      const maxPrice = 1000000;
+      const minPrice = {
+        bungalo: 0,
+        flat: 1000,
+        house: 5000,
+      };
+
+      if (typeValue && price.value) {
+        if (isFinite(priceValue)) {
+          if (priceValue > maxPrice) {
+            return {
+              value: `Максималная цена жилья ${maxPrice} руб.`,
+            };
+          }
+
+          if (priceValue < minPrice[typeValue]) {
+            switch (typeValue) {
+              case 'bungalo':
+                return {
+                  value: `Минимальная цена эконом-варианта ${minPrice[typeValue]} руб.`,
+                };
+
+              case 'flat':
+                return {
+                  value: `Минимальная цена картиры ${minPrice[typeValue]} руб.`,
+                };
+
+              case 'house':
+                return {
+                  value: `Минимальная цена дома ${minPrice[typeValue]} руб.`,
+                };
+            }
+          }
+
+          return null;
+        }
+
+        return {
+          value: 'Только числовые значения',
+        };
       }
 
-      return {
-        price: true,
-      };
+      return null;
     }
 
     return null;
@@ -121,16 +156,23 @@ export class AdFormComponent implements OnInit {
   }
 
   showErrorMsg(control: string): boolean {
-    return this.showError && !!this.adForm.controls[control].errors;
+    return this.showErrors && !!this.adForm.controls[control].errors;
+  }
+
+  updateValuesAndValidity(): void {
+    this.adForm.get('capacity').updateValueAndValidity();
+    this.adForm.get('price').updateValueAndValidity();
+
+    this.priceErrors = this.adForm.controls.price.errors;
+    this.capacityErrors = this.adForm.controls.capacity.errors;
   }
 
   onSubmit(evt): boolean {
     const target = evt.target;
 
-    this.showError = true;
+    this.showErrors = true;
 
-    this.adForm.get('capacity').updateValueAndValidity();
-    this.adForm.get('price').updateValueAndValidity();
+    this.updateValuesAndValidity();
 
     if (!this.adForm.invalid) {
       const formData = new FormData(target as HTMLFormElement);
@@ -142,7 +184,7 @@ export class AdFormComponent implements OnInit {
       });
 
       this.adFormService.postData(formData)
-        .subscribe((data: any): void => {
+        .subscribe((data): void => {
           const subscription: Subscription = this.modalService.onHide.subscribe((): void => {
             this.openSuccessModal.emit();
             subscription.unsubscribe();
@@ -152,7 +194,7 @@ export class AdFormComponent implements OnInit {
           this.onReset(target);
         });
 
-      this.showError = false;
+      this.showErrors = false;
 
       return true;
     }
@@ -161,9 +203,10 @@ export class AdFormComponent implements OnInit {
   }
 
   onReset(form: HTMLFormElement): void {
+    this.updateValuesAndValidity();
     form.reset();
 
-    this.showError = false;
+    this.showErrors = false;
     this.avatar = '';
     this.images = [];
   }

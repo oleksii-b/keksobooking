@@ -22,11 +22,12 @@
           type="file"
           name="avatar"
           class="header__upload-input visually-hidden"
+          id="avatar"
           (input)="onAvatarLoad($event)"
           formControlName="avatar"
         />
 
-        <label class="header__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
+        <label class="header__drop-zone" for="avatar">Загрузите или&nbsp;перетащите сюда фото</label>
       </div>
 
       <p class="header__info">
@@ -41,10 +42,8 @@
     <input
       name="title"
       class="form-control"
-      [class.show-error]="showError"
+      [class.show-error]="showErrors"
       type="text"
-      minlength="30"
-      maxlength="100"
       formControlName="title"
     />
 
@@ -62,7 +61,7 @@
     <input
       name="address"
       class="form-control"
-      [class.show-error]="showError"
+      [class.show-error]="showErrors"
       type="text"
       formControlName="address"
     />
@@ -81,7 +80,8 @@
     <select
       name="type"
       class="form-control"
-      [class.show-error]="showError"
+      [class.show-error]="showErrors"
+      (change)="updateValuesAndValidity()"
       formControlName="type"
     >
       <option value="" disabled selected hidden>Не выбрано</option>
@@ -103,9 +103,10 @@
 
     <input
       name="price"
+      type="text"
       class="form-control"
-      [class.show-error]="showError"
-      type="number"
+      [class.show-error]="showErrors"
+      (ngModelChange)="updateValuesAndValidity()"
       formControlName="price"
     />
 
@@ -113,7 +114,8 @@
       class="error-msg"
       [class.visible]="showErrorMsg('price')"
     >
-      Обязательное поле
+      {{priceErrors?.required && 'Обязательное поле'}}
+      {{priceErrors?.value}}
     </div>
   </fieldset>
 
@@ -125,7 +127,7 @@
         <select
           name="timein"
           class="form-control"
-          [class.show-error]="showError"
+          [class.show-error]="showErrors"
           formControlName="timein"
         >
           <option value="" disabled selected hidden>Заезд после...</option>
@@ -146,7 +148,7 @@
         <select
           name="timeout"
           class="form-control"
-          [class.show-error]="showError"
+          [class.show-error]="showErrors"
           title="Time to go out"
           formControlName="timeout"
         >
@@ -172,8 +174,9 @@
     <select
       name="rooms"
       class="form-control"
-      [class.show-error]="showError"
+      [class.show-error]="showErrors"
       (change)="capacitySelect.disabled = false"
+      (ngModelChange)="updateValuesAndValidity()"
       [(ngModel)]="rooms"
       formControlName="rooms"
     >
@@ -200,7 +203,8 @@
       name="capacity"
       disabled
       class="form-control"
-      [class.show-error]="showError"
+      [class.show-error]="rooms && showErrors"
+      (ngModelChange)="updateValuesAndValidity()"
       [(ngModel)]="capacity"
       formControlName="capacity"
     >
@@ -213,9 +217,10 @@
 
     <div
       class="error-msg"
-      [class.visible]="showErrorMsg('capacity')"
+      [class.visible]="rooms && showErrorMsg('capacity')"
     >
-      Обязательное поле
+      {{capacityErrors?.required && 'Обязательное поле'}}
+      {{capacityErrors?.value}}
     </div>
   </fieldset>
 
@@ -249,11 +254,12 @@
           type="file"
           name="images"
           class="upload__input visually-hidden"
+          id="images"
           (change)="onImageLoad($event)"
           multiple
         />
 
-        <label class="upload__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
+        <label class="upload__drop-zone" for="images">Загрузите или&nbsp;перетащите сюда фото</label>
       </div>
 
       <div *ngFor="let img of images; let i = index;" class="photo" draggable="true">

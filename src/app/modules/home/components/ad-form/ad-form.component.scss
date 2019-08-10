@@ -1,3 +1,22 @@
+@import '~bootstrap-scss/_functions';
+@import '~bootstrap-scss/_variables';
+
+%drop-zone {
+  border-radius: 5px;
+  border: dashed 1px #c7c7c7;
+  color: #999;
+  cursor: pointer;
+  font-size: 14px;
+  height: 70px;
+  padding: 10px 10px 5px;
+  text-align: center;
+  transition: all 0.25s;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
 .ad-form {
   display: flex;
   flex-wrap: wrap;
@@ -12,20 +31,9 @@
     margin-top: 0;
     margin-left: 20px;
   }
-  
+
   &__drop-zone {
-    border-radius: 5px;
-    border: dashed 1px #c7c7c7;
-    color: #999;
-    cursor: pointer;
-    font-size: 14px;
-    height: 70px;
-    padding: 10px 10px 5px;
-    text-align: center;
-  
-    &:hover {
-      color: #ff5635;
-    }
+    @extend %drop-zone;
   }
 
   &__upload {
@@ -53,8 +61,7 @@
 
   &__drop-zone:focus,
   &__upload-input:focus + &__drop-zone {
-    box-shadow: 0 0 2px 2px #ff6547;
-    color: #ff5635;
+    box-shadow: $input-box-shadow, $input-focus-box-shadow;
   }
 }
 
@@ -101,11 +108,14 @@
 }
 
 .error-msg {
+  color: brown;
   display: none;
+  font-size: 12.5px;
+  margin-top: 5px;
 
-  // &.visible {
-  //   display: block;
-  // }
+  &.visible {
+    display: block;
+  }
 }
 
 .time-controls {
@@ -135,24 +145,12 @@
   }
 
   &__drop-zone {
-    border-radius: 5px;
-    border: dashed 1px #c7c7c7;
-    color: #999;
-    cursor: pointer;
-    font-size: 14px;
-    height: 70px;
-    padding: 10px 10px 5px;
-    text-align: center;
-  
-    &:hover {
-      color: #ff5635;
-    }
+    @extend %drop-zone;
   }
 
   &__drop-zone:focus,
   &__input:focus + &__drop-zone {
-    box-shadow: 0 0 2px 2px #ff6547;
-    color: #ff5635;
+    box-shadow: $input-box-shadow, $input-focus-box-shadow;
   }
 }
 
