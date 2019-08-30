@@ -12,6 +12,7 @@
 .ads {
   list-style: none;
   margin: 30px auto;
+  max-width: 960px;
 }
 
 .ad {
@@ -24,12 +25,7 @@
 
   &__header {
     display: flex;
-    margin-bottom: 15px;
-  }
-
-  &__group {
-    align-items: center;
-    display: flex;
+    margin-bottom: 5px;
   }
 
   &__info {
@@ -45,10 +41,10 @@
   }
 
   &__title {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 18px;
-    margin-bottom: 10px;
     margin: 0;
+    margin-right: 10px;
     width: 100%;
   }
 
@@ -59,13 +55,16 @@
   }
 
   &__type {
-    font-size: 16px;
     font-weight: bold;
     margin-right: 15px;
   }
 
   &__text {
     margin: 0 0 10px;
+
+    &--address {
+      display: block;
+    }
   }
 }
 
@@ -73,7 +72,8 @@
   display: flex;
   font-size: 0;
   list-style: none;
-  margin: 0;
+  margin: 15px 0;
+  overflow: hidden;
   padding: 0;
 }
 

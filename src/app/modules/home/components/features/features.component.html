@@ -1,15 +1,38 @@
-<label
-  *ngFor="let feature of features"
-  [ngClass]="[featureClass, feature.name]"
-  [class.active]="feature.checked"
->
-  <input
-    type="checkbox"
-    name="features"
-    [value]="feature.name"
-    class="feature__checkbox visually-hidden"
-    (change)="onChange(feature)"
-  />
+<div *ngIf="formGroup" [formGroup]="formGroup">
+  <label
+    *ngFor="let feature of features"
+    class="feature feature-sm"
+    [ngClass]="feature.name"
+    [class.active]="formGroup.value[feature.name]"
+  >
+    <input
+      type="checkbox"
+      name="features"
+      class="feature__checkbox visually-hidden"
+      [value]="feature.name"
+      [formControlName]="feature.name"
+      (change)="onChange(feature)"
+    />
 
-  {{feature.title}}
-</label>
+    {{feature.title}}
+  </label>
+</div>
+
+<div *ngIf="!formGroup">
+  <label
+    *ngFor="let feature of features"
+    class="feature"
+    [ngClass]="feature.name"
+    [class.active]="feature.checked"
+  >
+    <input
+      type="checkbox"
+      name="features"
+      class="feature__checkbox visually-hidden"
+      [value]="feature.name"
+      (change)="onChange(feature)"
+    />
+
+    {{feature.title}}
+  </label>
+</div>

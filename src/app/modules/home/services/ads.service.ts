@@ -6,7 +6,7 @@ import { IAd } from '../models/ad.model';
 
 @Injectable()
 export class AdsService {
-  private subject = new Subject<any>();
+  private stream$ = new Subject<any>();
 
   constructor(
     private http: HttpClient,
@@ -16,52 +16,69 @@ export class AdsService {
     return this.http.get('https://js.dump.academy/keksobooking/data');
   }
 
-  getFilterResult(it: IAd, filters: any): boolean {
-    const {offer} = it;
+  getFilteredResult(data: IAd[], filters: any): IAd[] {
+    const namesOfFilters = Object.keys(filters);
 
-    return Object.keys(offer).every((key: string): boolean => {
-      if (filters[key]) {
-        if (key === 'features') {
-          const hasFeatures = filters[key].every((feature: string): boolean => {
-            return (new Set(offer.features)).has(feature);
-          });
+    return data.filter((it: IAd): boolean => {
+      const {offer} = it;
 
-          if (!hasFeatures) {
-            return false;
-          }
-        } else if (key === 'price') {
-          const {price} = offer;
-          const minPrice = filters[key].min;
-          const maxPrice = filters[key].max;
+      return namesOfFilters.every((key: string): boolean => {
+        if (offer[key]) {
+          if (key === 'features') {
+            const hasFeatures = filters[key].every((feature: string): boolean => {
+              return (new Set(offer.features)).has(feature);
+            });
 
-          if (price < minPrice || (maxPrice && price > maxPrice)) {
-            return false;
+            if (!hasFeatures) {
+              return false;
+            }
+          } else if (key === 'price') {
+            const {price} = offer;
+            const minPrice = filters[key].min;
+            const maxPrice = filters[key].max;
+
+            if (price < minPrice || (maxPrice && price > maxPrice)) {
+              return false;
+            }
+          } else {
+            if (filters[key] !== `${offer[key]}`) {
+              return false;
+            }
           }
-        } else {
-          if (filters[key] !== `${offer[key]}`) {
-            return false;
-          }
+
+          return true;
         }
-      }
 
-      return true;
+        return false;
+      });
     });
   }
 
   setFilters(filterList: any): void {
-    const filters = {...filterList};
-    const features = Array.from(filters.features);
+    const filters = {
+      features: filterList.features
+    };
 
-    if (features.length) {
-      filters.features = [...features];
-    } else {
-      delete filters.features;
-    }
+    Object.keys(filterList).forEach((key: string) => {
+      if (key === 'features') {
+        if (filters.features) {
+          const features = Array.from(filters.features);
 
-    this.subject.next(filters);
+          if (features.length) {
+            filters.features = [...features];
+          } else {
+            delete filters.features;
+          }
+        }
+      } else {
+        filters[key] = filterList[key].value;
+      }
+    });
+
+    this.stream$.next(filters);
   }
 
   getFilters(): Observable<any> {
-    return this.subject.asObservable();
+    return this.stream$.asObservable();
   }
 }

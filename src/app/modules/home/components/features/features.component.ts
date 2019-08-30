@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 import { IFeature } from '../../models/ad.model';
 
@@ -8,7 +9,7 @@ import { IFeature } from '../../models/ad.model';
   styleUrls: ['./features.component.scss']
 })
 export class FeaturesComponent {
-  @Input() featureClass = '';
+  @Input() formGroup?: FormGroup;
 
   features: IFeature[] = [
     {
@@ -37,7 +38,7 @@ export class FeaturesComponent {
     },
   ];
 
-  constructor() { }
+  constructor() {}
 
   onChange(feature): void {
     feature.checked = !feature.checked;

@@ -35,4 +35,4 @@ import { FiltersComponent } from './components/filters/filters.component';
     AdsService,
   ]
 })
-export class HomeModule { }
+export class HomeModule {}

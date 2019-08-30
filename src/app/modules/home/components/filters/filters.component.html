@@ -1,35 +1,94 @@
-<form class="form" autocomplete="off" (change)="onSetFilters($event)">
-  <select name="type" id="housing-type" class="filter">
-    <option value="any" selected>Любой тип жилья</option>
-    <option value="bungalo">Эконом-вариант</option>
-    <option value="flat">Квартира</option>
-    <option value="house">Дом</option>
-  </select>
+<div
+  class="overlay"
+  [class.visible]="visibility"
+  (click)="onToggleFilters()"
+></div>
 
-  <select name="price" id="housing-price" class="filter">
-    <option value="any" selected>Любая</option>
-    <option value="low">до 10000&#x20bd;</option>
-    <option value="middle">10000 - 50000&#x20bd;</option>
-    <option value="high">от 50000&#x20bd;</option>
-  </select>
+<div class="filters" [class.visible]="visibility">
+  <form
+    #filterForm
+    class="form"
+    [formGroup]="form"
+    autocomplete="off"
+  >
+    <div class="filter">
+      <select name="type" class="select form-control input-sm" formControlName="type">
+        <option value="" selected>Любой тип жилья</option>
+        <option value="bungalo">Эконом-вариант</option>
+        <option value="flat">Квартира</option>
+        <option value="house">Дом</option>
+      </select>
+    </div>
 
-  <select name="rooms" id="housing-rooms" class="filter">
-    <option value="any" selected>Любое число комнат</option>
-    <option value="1">Одна комната</option>
-    <option value="2">Две комнаты</option>
-    <option value="3">Три комнаты</option>
-  </select>
+    <div class="filter">
+      <select name="price" class="select form-control input-sm" formControlName="price">
+        <option value="" selected>Любая цена</option>
+        <option value="low">до 10000&#x20bd;</option>
+        <option value="middle">10000 - 50000&#x20bd;</option>
+        <option value="high">от 50000&#x20bd;</option>
+      </select>
+    </div>
 
-  <select name="guests" id="housing-guests" class="filter">
-    <option value="any" selected>Любое число гостей</option>
-    <option value="1">Один гость</option>
-    <option value="2">Два гостя</option>
-    <option value="3">Три гостя</option>
-  </select>
+    <div class="filter">
+      <select name="rooms" class="select form-control input-sm" formControlName="rooms">
+        <option value="" selected>Любое число комнат</option>
+        <option value="1">Одна комната</option>
+        <option value="2">Две комнаты</option>
+        <option value="3">Три комнаты</option>
+      </select>
+    </div>
 
-  <fieldset class="features">
-    <app-features
-      [featureClass]="'feature feature-sm'"
-    ></app-features>
-  </fieldset>
-</form>
+    <div class="filter">
+      <select name="guests" class="select form-control input-sm" formControlName="guests">
+        <option value="" selected>Любое число гостей</option>
+        <option value="1">Один гость</option>
+        <option value="2">Два гостя</option>
+        <option value="3">Три гостя</option>
+      </select>
+    </div>
+
+    <fieldset class="features">
+      <app-features
+        [formGroup]="features"
+      ></app-features>
+    </fieldset>
+  </form>
+
+  <button
+    class="btn-close close hidden-md hidden-lg"
+    (click)="onToggleFilters()"
+  >
+    &times;
+  </button>
+</div>
+
+<div class="container hidden-md hidden-lg">
+  <button class="btn btn-default btn-toggle" (click)="onToggleFilters()">
+    <i class="glyphicon glyphicon-filter"></i>
+    <span class="btn-toggle__text">Фильтры</span>
+  </button>
+</div>
+
+<div *ngIf="selectedFilters.length" class="selected-options container">
+  <ul class="selected-filters">
+    <li *ngFor="let filter of selectedFilters" class="selected-filters__item">
+      <ul *ngIf="filter.keys && filter.length" class="selected-features">
+        <li *ngFor="let feature of filter" [ngClass]="['feature', 'feature-sm', feature]">
+          {{feature}}
+
+          <button class="btn-remove-filter" (click)="onClearFeature(feature)">
+            &times;
+          </button>
+        </li>
+      </ul>
+
+      <div *ngIf="!filter.keys" class="selected-filter btn btn-sm">
+        {{filters[filter].text}}
+
+        <button class="btn-remove-filter" (click)="onClearFilter(filter)">
+          &times;
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

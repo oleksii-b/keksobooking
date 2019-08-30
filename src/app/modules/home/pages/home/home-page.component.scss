@@ -1,15 +1,19 @@
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+
 $bgcolor-success: darkseagreen;
 
 .header {
   align-items: center;
   display: flex;
   flex-direction: column;
+  max-width: 100%;
   position: relative;
+  width: $container-lg;
 
   &__bg {
     background-image: url('../../../../../assets/img/map.jpg');
     background-position: center;
-    background-size: cover;
     bottom: 0;
     left: 0;
     opacity: 0.75;
@@ -23,7 +27,8 @@ $bgcolor-success: darkseagreen;
 .title {
   background: rgba(255, 255, 255, 0.8);
   color: sienna;
-  font-family: fantasy;
+  font-family: fantasy, sans-serif;
+  font-weight: bold;
   letter-spacing: 3px;
   margin: 120px 20px 100px;
   padding: 10px 30px;
@@ -42,8 +47,11 @@ $bgcolor-success: darkseagreen;
 }
 
 .filters {
+  @include make-row;
+
+  align-self: stretch;
   background-color: rgba(3, 28, 45, 0.5);
-  width: 100%;
+  padding: 10px 0;
 }
 
 

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class AdFormService {
   constructor(
     private http: HttpClient,
-  ) { }
+  ) {}
 
   postData(data): Observable<any> {
     return this.http.post('https://js.dump.academy/keksobooking', data);

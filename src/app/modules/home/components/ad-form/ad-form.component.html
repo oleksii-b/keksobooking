@@ -11,32 +11,50 @@
   <fieldset class="header">
     <legend class="title">Ваша фотография (для карты)</legend>
 
-    <div class="header__upload">
-      <div class="header__preview">
-        <img *ngIf="!avatar" src="assets/img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44" />
-        <img *ngIf="avatar" class="avatar" [src]="avatar" alt="Аватар пользователя" />
+    <div class="header__container container">
+      <div class="row">
+        <div class="header__upload">
+          <div class="header__preview">
+            <img
+              *ngIf="!avatar"
+              src="assets/img/muffin-grey.svg"
+              title="Аватар пользователя"
+              alt="Аватар"
+              width="40"
+              height="44"
+            />
+
+            <img
+              *ngIf="avatar"
+              class="avatar"
+              [src]="avatar"
+              title="Аватар пользователя"
+              alt="Аватар"
+            />
+          </div>
+
+          <div class="header__upload-group">
+            <input
+              type="file"
+              name="avatar"
+              class="header__upload-input visually-hidden"
+              id="avatar"
+              (input)="onAvatarLoad($event)"
+              formControlName="avatar"
+            />
+
+            <label class="header__drop-zone" for="avatar">Загрузите или&nbsp;перетащите сюда фото</label>
+          </div>
+        </div>
+
+        <p class="header__info">
+          Заполните все обязательные поля, назначьте цену, загрузите фотографии. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.
+        </p>
       </div>
-
-      <div class="header__upload-group">
-        <input
-          type="file"
-          name="avatar"
-          class="header__upload-input visually-hidden"
-          id="avatar"
-          (input)="onAvatarLoad($event)"
-          formControlName="avatar"
-        />
-
-        <label class="header__drop-zone" for="avatar">Загрузите или&nbsp;перетащите сюда фото</label>
-      </div>
-
-      <p class="header__info">
-        Заполните все обязательные поля, назначьте цену, загрузите фотографии. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.
-      </p>
     </div>
   </fieldset>
 
-  <fieldset class="form-group form-group--wide">
+  <fieldset class="form-group form-group--title">
     <label class="label">Заголовок объявления</label>
 
     <input
@@ -55,7 +73,7 @@
     </div>
   </fieldset>
 
-  <fieldset class="form-group form-group--wide">
+  <fieldset class="form-group form-group--address">
     <label class="label">Адрес</label>
 
     <input
@@ -224,17 +242,15 @@
     </div>
   </fieldset>
 
-  <fieldset class="form-group form-group--wide">
-    <legend>Удобства: Wi-Fi, кухня, парковка, стиралка, лифт, кондиционер</legend>
+  <fieldset class="form-group form-group--features">
+    <legend class="label">Удобства: Wi-Fi, кухня, парковка, стиралка, лифт, кондиционер</legend>
 
     <div class="features">
-      <app-features
-        [featureClass]="'feature'"
-      ></app-features>
+      <app-features></app-features>
     </div>
   </fieldset>
 
-  <fieldset class="form-group form-group--wide">
+  <fieldset class="form-group form-group--description">
     <label class="label">Описание (не обязательно)</label>
 
     <textarea
@@ -245,7 +261,7 @@
     ></textarea>
   </fieldset>
 
-  <fieldset class="form-group form-group--wide">
+  <fieldset class="form-group form-group--photos">
     <label class="label">Фотографии жилья</label>
 
     <div class="photo-container">

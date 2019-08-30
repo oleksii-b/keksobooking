@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import { auditTime } from 'rxjs/operators';
 
 import { AdsService } from '../../services/ads.service';
 import { IAd } from '../../models/ad.model';
@@ -11,21 +12,25 @@ import { IAd } from '../../models/ad.model';
 })
 export class AdsComponent implements OnInit {
   ads: IAd[];
+  ads$: Observable<IAd[]>;
+  filters$: Observable<any>;
 
   constructor(
     private adsService: AdsService,
-  ) {}
+  ) {
+    this.ads$ = this.adsService.getData();
+    this.filters$ = this.adsService.getFilters();
+  }
 
   ngOnInit(): void {
-    this.adsService.getData().subscribe((value: IAd[]): void => {
+    this.ads$.subscribe((value: IAd[]): void => {
       this.ads = value;
     });
 
-    combineLatest(this.adsService.getData(), this.adsService.getFilters())
-      .subscribe((value: [IAd[], any]): void => {
-        this.ads = value[0].filter((it: IAd): boolean => {
-          return this.adsService.getFilterResult(it, value[1]);
-        });
+    combineLatest(this.ads$, this.filters$)
+      .pipe(auditTime(500))
+      .subscribe(([data, filters]): void => {
+        this.ads = this.adsService.getFilteredResult(data, filters);
       });
   }
 }

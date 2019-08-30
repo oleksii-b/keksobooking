@@ -1,5 +1,4 @@
-@import '~bootstrap-scss/_functions';
-@import '~bootstrap-scss/_variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
 
 %drop-zone {
   border-radius: 5px;
@@ -13,7 +12,7 @@
   transition: all 0.25s;
 
   &:hover {
-    color: $primary;
+    color: $brand-primary;
   }
 }
 
@@ -27,9 +26,20 @@
   padding-bottom: 20px;
   width: 100%;
 
+  &__container {
+    width: auto;
+  }
+
   &__info {
-    margin-top: 0;
-    margin-left: 20px;
+
+    @media (max-width: $screen-xs-max) {
+      margin-top: 10px;
+    }
+
+    @media (min-width: $screen-sm-min) {
+      padding-left: 20px;
+      overflow: hidden;
+    }
   }
 
   &__drop-zone {
@@ -38,6 +48,10 @@
 
   &__upload {
     display: flex;
+
+    @media (min-width: $screen-sm-min) {
+      float: left;
+    }
   }
 
   &__preview {
@@ -48,7 +62,9 @@
     height: 70px;
     justify-content: center;
     margin-right: 10px;
+    max-height: 70px;
     max-width: 70px;
+    min-width: 70px;
     overflow: hidden;
     text-align: center;
     width: 100%;
@@ -61,11 +77,12 @@
 
   &__drop-zone:focus,
   &__upload-input:focus + &__drop-zone {
-    box-shadow: $input-box-shadow, $input-focus-box-shadow;
+    color: $brand-primary;
   }
 }
 
 .title {
+  padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
@@ -74,13 +91,36 @@
   font-size: 14px;
   padding: 0 8px;
 
-  &--wide {
+  @media (max-width: $screen-sm-max) {
+    flex-basis: 50%;
+  }
+
+  &--title,
+  &--address,
+  &--time,
+  &--features,
+  &--description,
+  &--photos {
     flex-basis: 50%;
     max-width: 50%;
   }
 
-  &--time {
-    flex-basis: 50%;
+  &--time,
+  &--features {
+
+    @media (max-width: $screen-sm-max) {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+  }
+
+  &--description,
+  &--photos {
+
+    @media (max-width: $screen-xs-max) {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
   }
 
   &--submit {
@@ -92,6 +132,9 @@
 
 .label {
   display: block;
+  font-size: $font-size-base;
+  font-weight: bolder;
+  margin-bottom: 0;
   padding-bottom: 5px;
 }
 
@@ -150,7 +193,7 @@
 
   &__drop-zone:focus,
   &__input:focus + &__drop-zone {
-    box-shadow: $input-box-shadow, $input-focus-box-shadow;
+    color: $brand-primary;
   }
 }
 
