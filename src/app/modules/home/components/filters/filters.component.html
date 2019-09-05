@@ -69,11 +69,14 @@
   </button>
 </div>
 
-<div *ngIf="selectedFilters.length" class="selected-options container">
+<div *ngIf="(selectedFilters$ | async).length" class="selected-options container">
   <ul class="selected-filters">
-    <li *ngFor="let filter of selectedFilters" class="selected-filters__item">
-      <ul *ngIf="filter.keys && filter.length" class="selected-features">
-        <li *ngFor="let feature of filter" [ngClass]="['feature', 'feature-sm', feature]">
+    <li *ngFor="let key of (selectedFilters$ | async)" class="selected-filters__item">
+      <ul *ngIf="key.name === 'features'" class="selected-features">
+        <li
+          *ngFor="let feature of key.values"
+          [ngClass]="['feature', 'feature-sm', feature]"
+        >
           {{feature}}
 
           <button class="btn-remove-filter" (click)="onClearFeature(feature)">
@@ -82,10 +85,10 @@
         </li>
       </ul>
 
-      <div *ngIf="!filter.keys" class="selected-filter btn btn-sm">
-        {{filters[filter].text}}
+      <div *ngIf="key.text" class="selected-filter btn btn-sm">
+        {{key.text}}
 
-        <button class="btn-remove-filter" (click)="onClearFilter(filter)">
+        <button class="btn-remove-filter" (click)="onClearFilter(key.name)">
           &times;
         </button>
       </div>

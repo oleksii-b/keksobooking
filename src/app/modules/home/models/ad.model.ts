@@ -25,3 +25,9 @@ export interface IFeature {
   name: string;
   title: string;
 }
+
+export interface IImage {
+  file: File;
+  fileName: string;
+  src: string | ArrayBuffer;
+}

@@ -27,59 +27,90 @@
 </header>
 
 <main>
-  <div class="btn-container container">
-    <button type="button" class="btn btn-success" (click)="openAdFormModal(adFormModal)">
-      Добавить объявление
-    </button>
+  <section class="ads container">
+    <div class="ads__header">
+      <div>
+        Найдено результатов: {{(ads$ | async)?.length}}
+      </div>
+
+      <button type="button" class="btn btn-success" (click)="adFormModal.show()">
+        Добавить объявление
+      </button>
+    </div>
+
+    <app-ads></app-ads>
+  </section>
+
+  <div
+    #adFormModal="bs-modal"
+    class="modal fade"
+    id="adFormModal"
+    [config]="{backdrop: 'static'}"
+    (click)="onAdFormHide($event)"
+    (onHidden)="onAdFormHidden()"
+    tabindex="-1"
+    role="dialog"
+    bsModal
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            class="close pull-right"
+            (click)="adFormModal.hide()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+          <h2 class="modal-title">
+            Ваше объявление
+          </h2>
+        </div>
+
+        <div class="modal-body">
+          <app-ad-form
+            (openSuccessModal)="successModal.show()"
+            (hideFormModal)="adFormModal.hide()"
+            (setSuccessStatus)="setSuccessStatus()"
+          ></app-ad-form>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <ng-template #adFormModal>
-    <div class="modal-header">
-      <button
-        class="close pull-right"
-        (click)="modalRef.hide()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div
+    #successModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    bsModal
+  >
+    <div class="modal-dialog">
+      <div class="modal-content modal-content--success">
+        <div class="modal-header modal-header--success">
+          <button
+            class="close pull-right"
+            (click)="successModal.hide()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
 
-      <h2 class="modal-title">
-        Ваше объявление
-      </h2>
+          <h2 class="modal-title modal-title--success">
+            Ваше объявление<br>успешно размещено!
+          </h2>
+        </div>
+
+        <div class="modal-footer modal-footer--success">
+          <button
+            class="btn btn-success"
+            (click)="successModal.hide()"
+          >
+            Закрыть
+          </button>
+        </div>
+      </div>
     </div>
-
-    <div class="modal-body">
-      <app-ad-form
-        (openSuccessModal)="openSuccessModal()"
-        (hideFormModal)="modalRef.hide()"
-      ></app-ad-form>
-    </div>
-  </ng-template>
-
-  <ng-template #successModal>
-    <div class="modal-header modal-header--success">
-      <button
-        class="close pull-right"
-        (click)="successModalRef.hide()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-
-      <h2 class="modal-title modal-title--success">
-        Ваше объявление<br>успешно размещено!
-      </h2>
-    </div>
-
-    <div class="modal-footer modal-footer--success">
-      <button
-        class="btn btn-success"
-        (click)="successModalRef.hide()"
-      >
-        Закрыть
-      </button>
-    </div>
-  </ng-template>
-
-  <app-ads></app-ads>
+  </div>
 </main>
 
 <footer class="footer container">

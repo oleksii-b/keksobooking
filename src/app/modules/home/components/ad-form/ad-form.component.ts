@@ -1,9 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
 
 import { AdFormService } from '../../services/ad-form.service';
+import { IImage } from '../../models/ad.model';
 
 @Component({
   selector: 'app-ad-form',
@@ -13,12 +12,13 @@ import { AdFormService } from '../../services/ad-form.service';
 export class AdFormComponent {
   @Output() openSuccessModal = new EventEmitter<void>();
   @Output() hideFormModal = new EventEmitter<void>();
+  @Output() setSuccessStatus = new EventEmitter<void>();
 
   adForm: FormGroup;
   avatar: string | ArrayBuffer = null;
   rooms = '';
   capacity = '';
-  images: {file: File, fileName: string, src: string | ArrayBuffer}[] = [];
+  images: IImage[] = [];
   showErrors = false;
   priceErrors = null;
   capacityErrors = null;
@@ -26,7 +26,6 @@ export class AdFormComponent {
   constructor(
     private formBuilder: FormBuilder,
     private adFormService: AdFormService,
-    private modalService: BsModalService,
   ) {
     this.adForm = this.formBuilder.group({
       avatar: [''],
@@ -126,11 +125,21 @@ export class AdFormComponent {
 
     if (input.files && input.files[0]) {
       const reader: FileReader = new FileReader();
+      const img = new Image();
+
+      img.onerror = img.onabort = () => {
+        this.avatar = null;
+      };
+
+      img.onload = ({target}): void => {
+        this.avatar = (target as HTMLImageElement).src;
+      };
 
       reader.readAsDataURL(input.files[0]);
-      reader.addEventListener('load', (e: Event) => {
-        this.avatar = (e.target as FileReader).result;
-      });
+
+      reader.onload = ({target}): void => {
+        img.src = ((target as FileReader).result as string);
+      };
     }
   }
 
@@ -145,7 +154,7 @@ export class AdFormComponent {
       const reader: FileReader = new FileReader();
 
       reader.readAsDataURL(input.files[0]);
-      reader.addEventListener('load', (e: Event) => {
+      reader.addEventListener('load', (e: Event): void => {
         this.images.push({
           file: input.files[0],
           fileName: input.value,
@@ -167,32 +176,27 @@ export class AdFormComponent {
     this.capacityErrors = this.adForm.controls.capacity.errors;
   }
 
-  onSubmit(evt): boolean {
-    const target = evt.target;
+  onSubmit(evt: Event): boolean {
+    const target = evt.target as HTMLFormElement;
 
     this.showErrors = true;
 
     this.updateValuesAndValidity();
 
     if (!this.adForm.invalid) {
-      const formData = new FormData(target as HTMLFormElement);
+      const formData = new FormData(target);
 
       formData.delete('images');
 
-      this.images.forEach((img) => {
+      this.images.forEach((img: IImage): void => {
         formData.append('images', img.file, img.fileName);
       });
 
-      this.adFormService.postData(formData)
-        .subscribe((data): void => {
-          const subscription: Subscription = this.modalService.onHide.subscribe((): void => {
-            this.openSuccessModal.emit();
-            subscription.unsubscribe();
-          });
-
-          this.hideFormModal.emit();
-          this.onReset(target);
-        });
+      this.adFormService.postData(formData).subscribe((): void => {
+        this.setSuccessStatus.emit();
+        this.hideFormModal.emit();
+        this.onReset(target);
+      });
 
       this.showErrors = false;
 

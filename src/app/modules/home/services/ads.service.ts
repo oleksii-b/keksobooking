@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { IAd } from '../models/ad.model';
 
 @Injectable()
 export class AdsService {
-  private stream$ = new Subject<any>();
+  private filters$ = new BehaviorSubject<any>({});
 
   constructor(
     private http: HttpClient,
@@ -16,7 +16,7 @@ export class AdsService {
     return this.http.get('https://js.dump.academy/keksobooking/data');
   }
 
-  getFilteredResult(data: IAd[], filters: any): IAd[] {
+  getFilteredData(data: IAd[], filters: any): IAd[] {
     const namesOfFilters = Object.keys(filters);
 
     return data.filter((it: IAd): boolean => {
@@ -55,14 +55,13 @@ export class AdsService {
   }
 
   setFilters(filterList: any): void {
-    const filters = {
-      features: filterList.features
-    };
+    const {features} = filterList;
+    const filters = {features};
 
-    Object.keys(filterList).forEach((key: string) => {
+    Object.keys(filterList).forEach((key: string): void => {
       if (key === 'features') {
         if (filters.features) {
-          const features = Array.from(filters.features);
+          const {features} = filters;
 
           if (features.length) {
             filters.features = [...features];
@@ -75,10 +74,10 @@ export class AdsService {
       }
     });
 
-    this.stream$.next(filters);
+    this.filters$.next(filters);
   }
 
   getFilters(): Observable<any> {
-    return this.stream$.asObservable();
+    return this.filters$.asObservable();
   }
 }

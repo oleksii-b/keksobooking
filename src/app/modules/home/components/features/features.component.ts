@@ -38,8 +38,6 @@ export class FeaturesComponent {
     },
   ];
 
-  constructor() {}
-
   onChange(feature): void {
     feature.checked = !feature.checked;
   }

@@ -1,7 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { HomeRoutingModule } from './home-routing.module';
@@ -12,7 +9,7 @@ import { AdsService } from './services/ads.service';
 import { AdsComponent } from './components/ads/ads.component';
 import { FeaturesComponent } from './components/features/features.component';
 import { FiltersComponent } from './components/filters/filters.component';
-
+import { SharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [
@@ -23,12 +20,9 @@ import { FiltersComponent } from './components/filters/filters.component';
     FiltersComponent,
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
     HomeRoutingModule,
     ModalModule.forRoot(),
+    SharedModule.forRoot(),
   ],
   providers: [
     AdFormService,

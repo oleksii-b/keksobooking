@@ -1,8 +1,6 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 
-$bgcolor-success: darkseagreen;
-
 .header {
   align-items: center;
   display: flex;
@@ -54,8 +52,15 @@ $bgcolor-success: darkseagreen;
   padding: 10px 0;
 }
 
+.ads {
 
-/* Подвал */
+  &__header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+}
 
 .footer {
   align-items: flex-start;
@@ -154,19 +159,29 @@ $bgcolor-success: darkseagreen;
   }
 }
 
-.btn-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+.error {
+  background-color: red;
+  color: white;
+  font-size: 30px;
+  left: 0;
+  margin: 0 auto;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  z-index: 100;
+}
+
+.modal-content {
+
+  &--success {
+    background: darkseagreen;
+  }
 }
 
 .modal-header {
 
   &--success {
-    align-items: center;
-    background: $bgcolor-success;
     border: 0;
-    flex-direction: column;
   }
 }
 
@@ -190,23 +205,11 @@ $bgcolor-success: darkseagreen;
   }
 }
 
-.error {
-  background-color: red;
-  color: white;
-  font-size: 30px;
-  left: 0;
-  margin: 0 auto;
-  position: fixed;
-  right: 0;
-  text-align: center;
-  z-index: 100;
-}
-
 .modal-footer {
 
   &--success {
-    background: $bgcolor-success;
     border: 0;
+    display: flex;
     justify-content: center;
     padding-bottom: 30px;
   }

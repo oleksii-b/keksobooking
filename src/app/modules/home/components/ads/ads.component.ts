@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
-import { auditTime } from 'rxjs/operators';
 
 import { AdsService } from '../../services/ads.service';
 import { IAd } from '../../models/ad.model';
@@ -28,9 +27,8 @@ export class AdsComponent implements OnInit {
     });
 
     combineLatest(this.ads$, this.filters$)
-      .pipe(auditTime(500))
       .subscribe(([data, filters]): void => {
-        this.ads = this.adsService.getFilteredResult(data, filters);
+        this.ads = this.adsService.getFilteredData(data, filters);
       });
   }
 }

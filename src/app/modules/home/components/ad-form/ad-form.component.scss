@@ -1,5 +1,7 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
 
+$img-size: 70px;
+
 %drop-zone {
   border-radius: 5px;
   border: dashed 1px #c7c7c7;
@@ -14,6 +16,32 @@
   &:hover {
     color: $brand-primary;
   }
+}
+
+%btn-remove {
+  align-items: center;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  height: 16px;
+  justify-content: center;
+  line-height: 0;
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  width: 16px;
+}
+
+%img-container {
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  height: $img-size;
+  justify-content: center;
+  width: $img-size;
 }
 
 .ad-form {
@@ -52,22 +80,6 @@
     @media (min-width: $screen-sm-min) {
       float: left;
     }
-  }
-
-  &__preview {
-    align-items: center;
-    background-color: #dadada;
-    border-radius: 5px;
-    display: flex;
-    height: 70px;
-    justify-content: center;
-    margin-right: 10px;
-    max-height: 70px;
-    max-width: 70px;
-    min-width: 70px;
-    overflow: hidden;
-    text-align: center;
-    width: 100%;
   }
 
   &__upload-group {
@@ -197,28 +209,16 @@
   }
 }
 
-.avatar {
-  height: auto;
-  max-width: 100%;
-}
-
+.avatar,
 .photo {
-  background-color: #e4e4de;
-  margin-bottom: 10px;
   margin-right: 10px;
-  position: relative;
 
   &,
-  &__img-container {
-    align-items: center;
-    border-radius: 5px;
-    display: flex;
-    height: 70px;
-    justify-content: center;
-    width: 70px;
+  &__container {
+    @extend %img-container;
   }
 
-  &__img-container {
+  &__container {
     overflow: hidden;
   }
 
@@ -229,21 +229,23 @@
   }
 
   &__btn-remove {
-    align-items: center;
-    background: #fff;
-    border-radius: 50%;
-    border: 1px solid #aaa;
-    cursor: pointer;
-    display: flex;
-    font-size: 16px;
-    height: 16px;
-    justify-content: center;
-    line-height: 0;
-    position: absolute;
-    right: -6px;
-    top: -6px;
-    width: 16px;
+    @extend %btn-remove;
   }
+}
+
+.avatar {
+  background-color: #dadada;
+  max-height: $img-size;
+  max-width: $img-size;
+  min-width: $img-size;
+  position: relative;
+  text-align: center;
+}
+
+.photo {
+  background-color: #e4e4de;
+  margin-bottom: 10px;
+  position: relative;
 }
 
 .features {
